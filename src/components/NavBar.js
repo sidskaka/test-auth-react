@@ -45,7 +45,7 @@ const NavBar = () => {
                </ul>
                {
                   (!isAuthenticated && (
-                     <span>Connexion</span>
+                     <span></span>
                   )) || (
                      <button onClick={handleLogout}>Déconnexion</button>
                   )

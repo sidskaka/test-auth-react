@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import Auth from '../contexts/Auth';
 import { login } from '../services/AuthApi';
 
 const LoginForm = () => {
+   const navigate = useNavigate();
    const [email, setEmail] = useState('');
    const [password, setPassword] = useState('');
+   const { isAuthenticated, setIsAuthenticated } = useContext(Auth);
 
    const handleSubmit = async event => {
       event.preventDefault();
@@ -17,6 +21,8 @@ const LoginForm = () => {
 
       try {
          const res = await login(credentials);
+         setIsAuthenticated(res);
+         navigate('/home', { replace: true });
       } catch ({ response }) {
          console.log(response);
       }

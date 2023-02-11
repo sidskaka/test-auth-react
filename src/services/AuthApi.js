@@ -3,21 +3,36 @@ import jwtDecode from 'jwt-decode';
 import { removeItem, addItem, getItem } from './LocaleStorage';
 
 export function hasAuthenticated() {
-   return false;
    const token = getItem('miniblogToken');
-   const tokenIsValid = token ? tokenIsValid(token) : false;
+   // Ligne à décommenter en cas de possibilité d'obtention de valides tokens
+   // const result = token ? tokenIsValid(token) : false;
+   const result = token ? token : false;
 
 
-   if (false === tokenIsValid) {
+   if (false === result) {
       removeItem('miniblogToken');
    }
-   return tokenIsValid;
+   return result;
 }
 
 export function login(credentials) {
-   return axios
-      .post('http://miniblog.local:8888/api/login_check', credentials)
-      .then(response => response);
+   const rand = () => {
+      return Math.random().toString(36).substr(2);
+   };
+   const token = () => {
+      return rand() + rand();
+   }
+
+   addItem('miniblogToken', token());
+   return true;
+   // return axios
+   //    .post('http://miniblog.local:8888/api/login_check', credentials)
+   //    .then(response => response.data.token)
+   //    .then(token => {
+   //       addItem('miniblogToken', token)
+
+   //       return true;
+   //    });
 }
 
 export function logout() {
